@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3> Monthly Report </h3>
+<table class = "table table-bordered">
+    <tr>
+        <td>Monthly Sale </td>
+        <td> {{ monthly_sale }}</td>
+    </tr>
+
+    <tr>
+        <td> Monthly Profit </td>
+        <td>{{ monthly_profit }}</td>
+    </tr>
+
+    <tr>
+        <td>Monthly Food</td>
+        <td>{{ monthly_food }}</td>
+    </tr>
+
+    <tr>
+        <td>Monthly Indirect Expense</td>
+        <td> {{ monthly_indirect_expense}}</td>
+    </tr>
+
+    <tr>
+        <td>Net Profit</td>
+        <td>{{ net_profit }}</td>
+    </tr>
+</table>
+<a href="{% url 'monthly-pdf' %}"
+   class="btn btn-danger">
+    Download Monthly PDF
+</a>
+{% endblock %}
+

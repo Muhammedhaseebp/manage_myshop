@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3> Expense Records</h3>
+<table class = "table table-striped">
+
+    <tr> 
+        <th>Date</th>
+        
+        <th>Expense</th>
+        <th>Type</th>
+        <th>Amount</th>
+        
+    </tr>
+
+    {% for expense in expenses %}
+    <tr>
+        <td> {{ expense.date }}</td>
+        
+        <td> {{ expense.expense_name }}</td>
+        <td> {{ expense.expense_type }}</td>
+        <td> {{ expense.amount }}</td>
+        
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

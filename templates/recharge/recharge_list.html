@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3> Recharge Records</h3>
+<table class = "table table-striped">
+
+    <tr> 
+        <th>Date</th>
+        <th>Total Recharge</th>
+        <th>Profit</th>
+    </tr>
+
+    {% for recharge in recharges %}
+    <tr>
+        <td> {{ recharge.date }}</td>
+        <td> {{ recharge.total_recharge }}</td>
+        <td> {{ recharge.recharge_profit }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

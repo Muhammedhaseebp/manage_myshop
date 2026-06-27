@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Reports</h2>
+
+<form method="GET" class="mb-3">
+    <input type="date" name="start" value="{{ start }}">
+    <input type="date" name="end" value="{{ end }}">
+    <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+</form>
+
+<hr>
+
+<div class="row">
+    <div class="col">
+        <h5>Total Sale: {{ total_sale }}</h5>
+    </div>
+    <div class="col">
+        <h5>Total Profit: {{ total_profit }}</h5>
+    </div>
+    <div class="col">
+        <h5>Total Expense: {{ total_expense }}</h5>
+    </div>
+    
+</div>
+
+<hr>
+
+<!-- SALES TABLE -->
+<h4>Sales</h4>
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Date</th>
+            <th>Product</th>
+            <th>Amount</th>
+            <th>Profit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sale in sales %}
+        <tr>
+            <td>{{ sale.date }}</td>
+            <td>{{ sale.product_name }}</td>
+            <td>{{ sale.amount }}</td>
+            <td>{{ sale.profit }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- EXPENSE TABLE -->
+<h4>Expenses</h4>
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Date</th>
+            <th>Expense</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in expenses %}
+        <tr>
+            <td>{{ e.date }}</td>
+            <td>{{ e.expense_name }}</td>
+            <td>{{ e.amount }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- RECHARGE TABLE -->
+<h4>Recharges</h4>
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Date</th>
+            <th>Total Recharge</th>
+            <th>Profit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in recharges %}
+        <tr>
+            <td>{{ r.date }}</td>
+            <td>{{ r.total_recharge }}</td>
+            <td>{{ r.recharge_profit }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

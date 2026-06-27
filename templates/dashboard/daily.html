@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Today's Dashboard</h3>
+<div class = "row">
+    <div class = "col-6 mb-3">
+        <div class = "card">
+            <div class = "card-body">
+                Opening Balance 
+                <br>
+                ₹ {{ opening_balance }}
+            </div>
+        </div>
+    </div>
+    <div class = "col-6 mb-3">
+        <div class = "card">
+            <div class = "card-body">
+                Total Cash 
+                <br>
+                ₹ {{ total_cash }}
+            </div>
+        </div>
+    </div>
+    <div class = "col-6 mb-3">
+        <div class = "card">
+            <div class = "card-body">
+                Total GPay
+                <br>
+                ₹ {{ total_gpay}}
+            </div>
+        </div>
+    </div>
+    <div class = "col-6 mb-3">
+        <div class = "card">
+            <div class = "card-body">
+                Today Sale
+                <br>
+                ₹ {{ today_total_sale}}
+            </div>
+        </div>
+    </div>
+    <div class = "col-6 mb-3">
+        <div class = "card">
+            <div class = "card-body">
+                Today Profit
+                <br>
+                ₹ {{ today_profit }}
+            </div>
+        </div>
+    </div>
+    <div class = "col-6 mb-3">
+        <div class = "card">
+            <div class = "card-body">
+                Closing Balance
+                <br>
+                ₹ {{ closing_balance }}
+            </div>
+        </div>
+    </div>
+</div>
+<h3> Sales Records</h3>
+<table class = "table table-striped">
+
+    <tr> 
+        <th>Date</th>
+        <th>Code</th>
+        <th>Product</th>
+        <th>Payment</th>
+        <th>Amount</th>
+        <th>Profit</th>
+    </tr>
+
+    {% for sale in sales %}
+    <tr>
+        <td> {{ sale.date }}</td>
+        <td> {{ sale.code }}</td>
+        <td> {{ sale.product_name }}</td>
+        <td> {{ sale.payment_method }}</td>
+        <td> {{ sale.amount }}</td>
+        <td> {{ sale.profit }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<h3> Expense Records</h3>
+<table class = "table table-striped">
+
+    <tr> 
+        <th>Date</th>
+        
+        <th>Expense</th>
+        <th>Type</th>
+        <th>Amount</th>
+        
+    </tr>
+
+    {% for expense in expenses %}
+    <tr>
+        <td> {{ expense.date }}</td>
+        
+        <td> {{ expense.expense_name }}</td>
+        <td> {{ expense.expense_type }}</td>
+        <td> {{ expense.amount }}</td>
+        
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
