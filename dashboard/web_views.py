@@ -29,13 +29,15 @@ def daily_dashboard(request):
     total_sale = sum(s.amount for s in Sale.objects.filter(date=today))
     total_profit = sum(s.profit for s in Sale.objects.filter(date=today))
     recharge_profit = sum(r.recharge_profit for r in Recharge.objects.filter(date = today))
+    total_cash = (sales.filter(payment_method="CASH").aggregate(total=Sum("amount"))["total"] or Decimal("0"))
+    total_gpay = (sales.filter(payment_method="GPAY").aggregate(total=Sum("amount"))["total"] or Decimal("0"))
 
     context = {
         "today_total_sale" : total_sale,
         "today_profit" : total_profit + recharge_profit,
         "opening_balance":opening_balance,
-        "total_cash": 0,
-        "total_gpay": 0,
+        "total_cash": total_cash,
+        "total_gpay": total_gpay,
         "closing_balance" : closing_balance,
         "sales":sales,
         "expenses":expenses,

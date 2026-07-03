@@ -6,21 +6,28 @@ from django.db.models import Sum
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from drf_spectacular.utils import extend_schema
 from sales.models import Sale
 from recharge.models import Recharge
 from expenses.models import Expense
 from .models import DailyBalance
 
 # Create your views here.
+@extend_schema(tags=["Dashboard"],summary="Daily Dashboard Report",description="""Returns today's business summary.
+Includes:Total Sales,Total Cash Payment,Total GPay Payment,Total Recharge,Today's Profit,Today's Indirect Expense,Opening Balance,Closing Balance
+Formula
+Today's Profit = Sales Profit + Recharge Profit
+Closing Balance = Total Sales + Total Recharge − All Expenses
+Opening Balance = Previous Day Closing Balance""")
 class DailyDashboardAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self,request):
         today = date.today()
-        sales = Sale.objects.filter(data = today)
+        sales = Sale.objects.filter(date = today)
         recharge = Recharge.objects.filter(date = today)
         expenses = Expense.objects.filter(date = today)
-        total_cash = (sales.filter(payment_method = "CASH").aaggregate(total = Sum("amount"))["total"] or Decimal("0"))
+        total_cash = (sales.filter(payment_method = "CASH").aggregate(total = Sum("amount"))["total"] or Decimal("0"))
         total_gpay = (sales.filter(payment_method = "GPAY").aggregate(total = Sum("amount"))["total"] or Decimal ("0"))
         total_sale = (sales.aggregate(total = Sum("amount"))["total"] or Decimal("0"))
         sales_profit = (sales.aggregate(total = Sum("profit")) ["total"] or Decimal("0"))
@@ -55,6 +62,11 @@ class DailyDashboardAPIView(APIView):
 
         })
 from datetime import datetime
+
+@extend_schema(tags=["Dashboard"],summary="Monthly Dashboard Report",description="""Returns monthly business report.
+Includes Monthly Sales,Monthly Profit,Monthly Food Expense,Monthly Indirect Expense,Net Profit
+Formula
+Net Profit = Monthly Profit − Monthly Indirect Expense""")
 
 class MonthlyDashboardAPIView(APIView):
     permission_classes = [IsAuthenticated]

@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-default-key")
+DEBUG = os.getenv("DEBUG", "True") == "True"
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-@^@d$8yenj92(%y#z8k$--jt*%ax8-4g0nrrrf+3k%wj-b)3&4"
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -50,6 +58,7 @@ INSTALLED_APPS = [
     
     "django_crontab",
     'backups.apps.BackupsConfig',
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -88,14 +97,13 @@ WSGI_APPLICATION = "manage_myshop.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "myshop",
-        "USER":"myshopuser",
-        "PASSWORD":"Sara7025955755",
-        "HOST":"localhost",
-        "PORT":"5432",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST", "localhost"),
+        "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -136,7 +144,9 @@ STATIC_URL = "static/"
 REST_FRAMEWORK ={
     "DEFAULT_AUTHENTICATION_CLASSES" : (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
+
+    ),
+    "DEFAULT_SCHEMA_CLASS":"drf_spectacular.openapi.AutoSchema",
 }
 
 AUTH_USER_MODEL = "accounts.User"
@@ -145,3 +155,26 @@ LOGIN_URL = "/"
 CRONJOBS = [
     ("0 23 * * *", "backups.utils.create_daily_backup"),
 ]
+
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+SPECTACULAR_SETTINGS = {
+    "TITLE" :"Sara Mobiles API",
+    "DESCRIPTION":"API Documentation for Sara Mobiles",
+    "VERSION":"1.0.0",
+    "SERVE_INCLUDE_SCHEMA":False,
+    "SECURITY" : [
+        { "BearerAuth":[]}
+    ],
+    "COMPONENTS":{
+        "securitySchemes":{
+            "BearerAuth":{
+                "type" : "http",
+                "scheme": "bearer",
+                "bearerFormat":"JWT"
+            }
+        }
+    },
+
+}
