@@ -108,7 +108,7 @@ def monthly_report_pdf(request):
     indirect_total = indirect_expenses.aggregate(total=Sum("amount"))["total"] or Decimal("0")
     total_expense = expenses.aggregate(total=Sum("amount"))["total"] or Decimal("0")
 
-    net_profit = (sales_profit + recharge_profit) - total_expense
+    net_profit = (sales_profit + recharge_profit) - (indirect_total + food_total)
 
     # RESPONSE
     response = HttpResponse(content_type="application/pdf")
